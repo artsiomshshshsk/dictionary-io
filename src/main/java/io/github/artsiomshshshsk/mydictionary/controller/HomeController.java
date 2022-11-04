@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping("/home")
     public String hello(){
-        return "Hello world!";
+        return "Hello autodeploy!!";
     }
 }
