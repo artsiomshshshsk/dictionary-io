@@ -13,7 +13,10 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>my-dictionary</name>
     <description>my-dictionary</description>
+
     <properties>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
         <java.version>19</java.version>
     </properties>
     <dependencies>
