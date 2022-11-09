@@ -1,5 +1,4 @@
 package io.github.artsiomshshshsk.mydictionary.model;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.lang.NonNull;
 import lombok.AllArgsConstructor;
