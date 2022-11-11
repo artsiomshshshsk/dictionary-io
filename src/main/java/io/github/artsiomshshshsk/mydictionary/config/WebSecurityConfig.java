@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                     ).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterAt(authFilter(), UsernamePasswordAuthenticationFilter.class);
+                .formLogin();
+//                .addFilterAt(authFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
