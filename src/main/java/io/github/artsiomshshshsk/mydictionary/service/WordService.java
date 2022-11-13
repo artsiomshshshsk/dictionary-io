@@ -11,4 +11,6 @@ public interface WordService {
     void deleteById(String id);
 
     List<Word> getAll();
+
+    void updateWord(String id,Word word);
 }

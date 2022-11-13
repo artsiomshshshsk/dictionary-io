@@ -4,7 +4,6 @@ import io.github.artsiomshshshsk.mydictionary.model.Word;
 import io.github.artsiomshshshsk.mydictionary.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -22,5 +21,19 @@ public class WordServiceImpl implements WordService{
     @Override
     public List<Word> getAll() {
         return wordRepository.findAll();
+    }
+    @Override
+    public void updateWord(String id,Word word) {
+        Word w = wordRepository.findById(id).get();
+        if(word.getOriginal() != null){
+            w.setOriginal(word.getOriginal());
+        }
+        if(word.getTranslations() != null){
+            w.setTranslations(word.getTranslations());
+        }
+        if(word.getTranscription() != null){
+            w.setTranscription(word.getTranscription());
+        }
+        wordRepository.save(w);
     }
 }

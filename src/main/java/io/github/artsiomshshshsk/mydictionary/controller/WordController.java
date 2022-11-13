@@ -4,11 +4,7 @@ import io.github.artsiomshshshsk.mydictionary.model.User;
 import io.github.artsiomshshshsk.mydictionary.model.Word;
 import io.github.artsiomshshshsk.mydictionary.service.UserService;
 import io.github.artsiomshshshsk.mydictionary.service.WordService;
-import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +36,11 @@ public class WordController {
     @GetMapping
     ResponseEntity<?> getAllWords(){
         return new ResponseEntity<>(wordService.getAll(),HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    void updateWord(@PathVariable String  id, @RequestBody Word word){
+        wordService.updateWord(id,word);
     }
 
     private User getCurrentlyLoggedInUser(){
