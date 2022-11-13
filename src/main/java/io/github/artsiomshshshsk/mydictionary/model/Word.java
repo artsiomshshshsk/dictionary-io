@@ -1,27 +1,26 @@
 package io.github.artsiomshshshsk.mydictionary.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.List;
 
-@Document(collection = "users")
+@Document(collection = "words")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
+@NoArgsConstructor
+public class Word {
     @Id
     private String id;
-    @Indexed(unique = true)
-    private String email;
-    private String username;
+    private String original;
+    private String transcription;
+    private List<String> translations;
+    @DBRef
     @JsonIgnore
-    private String password;
+    private User user;
 }
