@@ -23,4 +23,9 @@ public class Word {
     @DBRef
     @JsonIgnore
     private User user;
+
+
+    public String getUserId() {
+        return user.getId();
+    }
 }

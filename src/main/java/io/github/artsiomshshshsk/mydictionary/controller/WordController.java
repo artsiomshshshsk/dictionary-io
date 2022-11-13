@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequestMapping("/api/words")
 @RestController
 public class WordController {
@@ -35,7 +38,11 @@ public class WordController {
 
     @GetMapping
     ResponseEntity<?> getAllWords(){
-        return new ResponseEntity<>(wordService.getAll(),HttpStatus.OK);
+        String currentUserId = getCurrentlyLoggedInUser().getId();
+        List<Word> userWords = wordService.getAll().stream()
+                .filter((word)->word.getUserId().equals(currentUserId))
+                .toList();
+        return new ResponseEntity<>(userWords,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
