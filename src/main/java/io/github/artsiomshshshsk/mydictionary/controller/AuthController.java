@@ -60,7 +60,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 user.getId(),
-                userDetails.getUsername(),
+                user.getUsername(),
                 user.getEmail()
         ));
     }
