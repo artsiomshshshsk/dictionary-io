@@ -25,12 +25,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true
 )
 public class SecurityConfiguration {
-
-    @Autowired
-    UserServiceImpl userDetailsService;
-
-    @Autowired
+    private UserServiceImpl userDetailsService;
     private AuthEntryPointJwt unauthorizedHandler;
+
+    public SecurityConfiguration(UserServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+        this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -70,7 +71,9 @@ public class SecurityConfiguration {
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v2/api-docs",
-                        "/webjars/**").permitAll()
+                        "/webjars/**",
+                        "/verify",
+                        "/process_register").permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());

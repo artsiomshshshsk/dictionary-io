@@ -8,7 +8,6 @@ import io.github.artsiomshshshsk.mydictionary.security.payload.request.RegisterR
 import io.github.artsiomshshshsk.mydictionary.security.payload.response.JwtResponse;
 import io.github.artsiomshshshsk.mydictionary.security.payload.response.MessageResponse;
 import io.github.artsiomshshshsk.mydictionary.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +16,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -62,7 +66,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws MessagingException, UnsupportedEncodingException {
         if (userService.findByEmail(registerRequest.getEmail()).isPresent()) {
             return ResponseEntity
                     .badRequest()
@@ -74,8 +78,22 @@ public class AuthController {
                 .email(registerRequest.getEmail())
                 .password(encoder.encode(registerRequest.getPassword()))
                 .build();
-        userService.save(user);
+        String url = (((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest()).getRequestURL().toString();
+        String baseUrl = url.split("/api")[0];
+        userService.sendVerificationEmail(userService.register(user),baseUrl);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyToken(@RequestParam String verificationToken){
+        boolean verified = userService.verify(verificationToken);
+        if(verified){
+            return ResponseEntity.ok(new MessageResponse("Email confirmed successfully!"));
+        }else{
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Email confiramtion error"));
+        }
     }
 
 }
