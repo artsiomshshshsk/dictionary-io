@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/api/words")
 @RestController
+@CrossOrigin(origins = "https://my-dictionary-io.herokuapp.com", maxAge = 3600)
 public class WordController {
     private UserService userService;
     private WordService wordService;
