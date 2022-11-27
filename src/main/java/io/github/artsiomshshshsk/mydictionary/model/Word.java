@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Word {
+
+
     @Id
     private String id;
     private String original;
@@ -23,7 +25,6 @@ public class Word {
     @DBRef
     @JsonIgnore
     private User user;
-
 
     public String getUserId() {
         return user.getId();
