@@ -17,5 +17,5 @@ public interface WordService {
     void updateWord(String id,Word word);
 
     List<Word> getAllWordsByUserId(String currentUserId, int page, int size, WORD_SORT_BY sortBy, Sort.Direction sortDir);
-    List<Word> getAllWordsByUserId(String currentUserId);
+    List<Word> getAllWordsByUserId(String currentUserId,String language);
 }

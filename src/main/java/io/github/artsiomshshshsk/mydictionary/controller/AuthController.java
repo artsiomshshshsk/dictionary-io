@@ -55,7 +55,9 @@ public class AuthController {
 
         org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
 
-        User user = userService.findByEmail(userDetails.getUsername()).get();
+        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 user.getId(),

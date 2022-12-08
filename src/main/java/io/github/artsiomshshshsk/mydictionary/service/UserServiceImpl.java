@@ -3,15 +3,14 @@ package io.github.artsiomshshshsk.mydictionary.service;
 import io.github.artsiomshshshsk.mydictionary.model.User;
 import io.github.artsiomshshshsk.mydictionary.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
@@ -97,6 +96,21 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         user.setVerificationToken(UUID.randomUUID().toString());
         return userRepository.save(user);
     }
+
+    public User getCurrentlyLoggedInUser(){
+        String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal()).getUsername();
+        return findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+    }
+
+    public String getCurrentlyLoggedInUserId(){
+        return getCurrentlyLoggedInUser().getId();
+    }
+
 
     @Override
     public Optional<User> findByEmail(String email) {

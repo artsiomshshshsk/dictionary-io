@@ -47,7 +47,7 @@ public class WordServiceImpl implements WordService{
     }
 
     @Override
-    public List<Word> getAllWordsByUserId(String currentUserId) {
-        return wordRepository.findByUserId(currentUserId);
+    public List<Word> getAllWordsByUserId(String currentUserId,String language) {
+        return wordRepository.findByUserId(currentUserId,language);
     }
 }

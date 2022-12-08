@@ -14,6 +14,6 @@ public interface WordRepository extends MongoRepository<Word, String> {
     @Query("{ 'user._id' : ?0 }")
     Page<Word> findByUserId(String userId, Pageable pageable);
 
-    @Query("{ 'user._id' : ?0 }")
-    List<Word> findByUserId(String userId);
+    @Query("{ 'user._id' : ?0, 'originalLanguage' : ?1 }")
+    List<Word> findByUserId(String userId,String language);
 }
