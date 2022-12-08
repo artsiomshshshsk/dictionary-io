@@ -12,4 +12,6 @@ public interface UserService {
     User register(User user);
     void sendVerificationEmail(User user,String baseUrl) throws MessagingException, UnsupportedEncodingException;
     boolean verify(String code);
+    User getCurrentlyLoggedInUser();
+    String getCurrentlyLoggedInUserId();
 }

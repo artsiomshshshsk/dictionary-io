@@ -1,22 +1,31 @@
 package io.github.artsiomshshshsk.mydictionary.service;
 
-import io.github.artsiomshshshsk.mydictionary.model.WORD_SORT_BY;
+import io.github.artsiomshshshsk.mydictionary.dto.WordRequest;
+import io.github.artsiomshshshsk.mydictionary.dto.WordResponse;
+import io.github.artsiomshshshsk.mydictionary.mapper.WordMapper;
 import io.github.artsiomshshshsk.mydictionary.model.Word;
 import io.github.artsiomshshshsk.mydictionary.repository.WordRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class WordServiceImpl implements WordService{
     private final WordRepository wordRepository;
+    private final WordMapper wordMapper;
+
+    private final UserService userService;
+
     @Override
-    public Word save(Word word) {
-        return wordRepository.save(word);
+    public WordResponse save(WordRequest request) {
+        Word word = wordMapper.toWord(
+                request,
+                userService.getCurrentlyLoggedInUserId()
+        );
+        return wordMapper.toResponse(
+                wordRepository.save(word)
+        );
     }
     @Override
     public void deleteById(String id) {
@@ -26,24 +35,28 @@ public class WordServiceImpl implements WordService{
     public List<Word> getAll() {
         return wordRepository.findAll();
     }
+
     @Override
-    public void updateWord(String id,Word word) {
-        Word w = wordRepository.findById(id).get();
-        if(word.getOriginal() != null){
-            w.setOriginal(word.getOriginal());
-        }
-        if(word.getTranslations() != null){
-            w.setTranslations(word.getTranslations());
-        }
-        if(word.getTranscription() != null){
-            w.setTranscription(word.getTranscription());
-        }
-        wordRepository.save(w);
+    public List<WordResponse> getAllUserWords() {
+        List<Word> words = wordRepository.findByUserId(userService.getCurrentlyLoggedInUserId());
+        return wordMapper.toResponses(words);
     }
 
     @Override
-    public List<Word> getAllWordsByUserId(String currentUserId, int page, int size, WORD_SORT_BY sortBy, Sort.Direction sortDir) {
-        return wordRepository.findByUserId(currentUserId, PageRequest.of(page,size,Sort.by(sortDir,sortBy.toString()))).stream().toList();
+    public WordResponse updateWord(String id,WordRequest word) {
+        Word w = wordRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Word not found")
+        );
+        if(word.original() != null){
+            w.setOriginal(word.original());
+        }
+        if(word.translations() != null){
+            w.setTranslations(word.translations());
+        }
+        if(word.transcription() != null){
+            w.setTranscription(word.transcription());
+        }
+        return wordMapper.toResponse(wordRepository.save(w));
     }
 
     @Override
