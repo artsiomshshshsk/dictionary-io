@@ -1,21 +1,18 @@
 package io.github.artsiomshshshsk.mydictionary.service;
 
-import io.github.artsiomshshshsk.mydictionary.model.WORD_SORT_BY;
+import io.github.artsiomshshshsk.mydictionary.dto.WordRequest;
+import io.github.artsiomshshshsk.mydictionary.dto.WordResponse;
 import io.github.artsiomshshshsk.mydictionary.model.Word;
-import org.bson.types.ObjectId;
-import org.springframework.data.domain.Sort;
-
 import java.util.List;
 
 public interface WordService {
-    Word save(Word word);
-
+    WordResponse save(WordRequest request);
+    List<WordResponse> getAllUserWords();
     void deleteById(String id);
 
     List<Word> getAll();
 
-    void updateWord(String id,Word word);
+    WordResponse updateWord(String id,WordRequest request);
+    List<Word> getAllWordsByUserId(String currentUserId);
 
-    List<Word> getAllWordsByUserId(String currentUserId, int page, int size, WORD_SORT_BY sortBy, Sort.Direction sortDir);
-    List<Word> getAllWordsByUserId(String currentUserId,String language);
 }

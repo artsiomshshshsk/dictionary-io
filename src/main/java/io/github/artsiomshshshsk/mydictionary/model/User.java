@@ -10,8 +10,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Document(collection = "users")
 @Data
 @NoArgsConstructor
@@ -27,5 +25,4 @@ public class User {
     private String password;
     private String verificationToken;
     private Boolean disabled;
-    private List<String> languages;
 }

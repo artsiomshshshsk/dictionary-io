@@ -1,7 +1,7 @@
 package io.github.artsiomshshshsk.mydictionary.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @Document(collection = "words")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Word {
@@ -20,7 +21,5 @@ public class Word {
     private String transcription;
     private List<String> translations;
     @DBRef
-    @JsonIgnore
     private User user;
-    private String originalLanguage;
 }
