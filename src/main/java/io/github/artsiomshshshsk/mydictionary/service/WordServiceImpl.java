@@ -21,7 +21,7 @@ public class WordServiceImpl implements WordService{
     public WordResponse save(WordRequest request) {
         Word word = wordMapper.toWord(
                 request,
-                userService.getCurrentlyLoggedInUserId()
+                userService.getCurrentlyLoggedInUser()
         );
         return wordMapper.toResponse(
                 wordRepository.save(word)

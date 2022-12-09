@@ -2,6 +2,7 @@ package io.github.artsiomshshshsk.mydictionary.mapper;
 
 import io.github.artsiomshshshsk.mydictionary.dto.WordRequest;
 import io.github.artsiomshshshsk.mydictionary.dto.WordResponse;
+import io.github.artsiomshshshsk.mydictionary.model.User;
 import io.github.artsiomshshshsk.mydictionary.model.Word;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -9,12 +10,12 @@ import java.util.List;
 @Component
 public class WordMapper {
 
-    public Word toWord(WordRequest wordRequest, String userId){
+    public Word toWord(WordRequest wordRequest, User user){
         return Word.builder()
                 .original(wordRequest.original())
                 .transcription(wordRequest.transcription())
                 .translations(wordRequest.translations())
-                .id(userId)
+                .user(user)
                 .build();
     }
 
@@ -24,8 +25,7 @@ public class WordMapper {
                 word.getId(),
                 word.getOriginal(),
                 word.getTranscription(),
-                word.getTranslations(),
-                word.getUser()
+                word.getTranslations()
         );
     }
 
