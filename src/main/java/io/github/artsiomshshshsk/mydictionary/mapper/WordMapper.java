@@ -24,7 +24,8 @@ public class WordMapper {
                 word.getId(),
                 word.getOriginal(),
                 word.getTranscription(),
-                word.getTranslations()
+                word.getTranslations(),
+                word.getUser()
         );
     }
 
