@@ -90,7 +90,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         }
     }
 
-
     public User register(User user){
         user.setDisabled(true);
         user.setVerificationToken(UUID.randomUUID().toString());
